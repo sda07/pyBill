@@ -1,13 +1,14 @@
 import openpyxl as op
 from openpyxl.utils import coordinate_from_string, column_index_from_string
-
+from calculate import calculate_it, income_tax
+wb = op.load_workbook('DATA13.xlsx')
 
 def find_header(sheet_name):
 	''' to find the coloumn name which 
 	is uniformly stated in row 1 of every
 	sheet 
 	'''
-	wb = op.load_workbook(filename = 'DATA13.xlsx')
+	#wb = op.load_workbook(filename = 'DATA13.xlsx')
 
 	sheet = wb.get_sheet_by_name(sheet_name)
 	header = list(sheet.rows)[0]
@@ -23,7 +24,7 @@ def find_header(sheet_name):
 def find_name(sheet_name, emp_name):
 	''' find name and return row number
 	'''
-	wb = op.load_workbook(filename = 'DATA13.xlsx')
+	#wb = op.load_workbook(filename = 'DATA13.xlsx')
 	sheet = wb.get_sheet_by_name(sheet_name)
 	row_val = 0
 
@@ -40,7 +41,8 @@ def find_net(sheet_name, row_num):
 	net_dict = {}
 	header = find_header(sheet_name)
 	
-	wb = op.load_workbook(filename = 'DATA13.xlsx')
+	#wb = op.load_workbook(filename = 'DATA13.xlsx')
+
 	sheet = wb.get_sheet_by_name(sheet_name)
 	try:
 		net_dict['BASIC'] = sheet.cell(row = row_num, 
@@ -96,9 +98,10 @@ def find_net(sheet_name, row_num):
 #print (wb.sheetnames)
 def main():
 	str_in = input("Enter value:")
-	wb = op.load_workbook(filename = 'DATA13.xlsx')
+	#wb = op.load_workbook(filename = 'DATA13.xlsx')
 	total = {}
 	for sh in wb.sheetnames:
+		#print(sh)
 		row_num = find_name(sh,str_in)
 		all_details = find_net(sh,row_num)
 		for val in list(all_details.keys()):
@@ -106,9 +109,13 @@ def main():
 				total[val] += all_details[val]
 			except KeyError:
 				total = all_details
+				break
 			except TypeError:
 				pass
-	print (total)
+		#print(total)
+	summary = calculate_it(total)
+	print(summary)
+	income_tax(summary)
 
 if __name__ == "__main__":
 	main()
