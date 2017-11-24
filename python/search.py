@@ -1,9 +1,10 @@
 import openpyxl as op
 from openpyxl.utils import coordinate_from_string, column_index_from_string
-from calculate import calculate_it, income_tax
+from calculate import calculate_it, income_tax, savings
+wb_1 = op.load_workbook('savings.xlsx')
 wb = op.load_workbook('DATA13.xlsx')
 
-def find_header(sheet_name):
+def find_header(sheet_name, wb):
 	''' to find the coloumn name which 
 	is uniformly stated in row 1 of every
 	sheet 
@@ -21,7 +22,7 @@ def find_header(sheet_name):
 	#print(hd_dic)
 	return hd_dic
 
-def find_name(sheet_name, emp_name):
+def find_name(sheet_name, emp_name, wb):
 	''' find name and return row number
 	'''
 	#wb = op.load_workbook(filename = 'DATA13.xlsx')
@@ -34,12 +35,27 @@ def find_name(sheet_name, emp_name):
 		    	row_val = cl.row
 	return row_val
 
-def find_net(sheet_name, row_num):
+def show_current_savings(sheet_name, emp_name):
+	''' show in console current data '''
+	sheet = wb_1.get_sheet_by_name(sheet_name)
+	header = find_header(sheet_name, wb_1)
+	name_row = find_name(sheet_name, emp_name, wb_1)
+	savings_dict ={}
+
+	for temp in list(header.keys()):
+		print(temp + ' : ' + str(sheet.cell(row = name_row, 
+			column = header[temp]).value) or 0 + '\n')
+		savings_dict[temp] = sheet.cell(row = name_row, 
+			column = header[temp]).value
+	return savings_dict
+
+
+def find_net(sheet_name, row_num, wb):
 	''' find basic, basic1(Gp), splpay, qpay,ta, cca(da_on_ta)
 	hra, da, other1(WA), itax, sc, cghs, grinsurance, gpf_t(nps)
 	'''
 	net_dict = {}
-	header = find_header(sheet_name)
+	header = find_header(sheet_name, wb)
 	
 	#wb = op.load_workbook(filename = 'DATA13.xlsx')
 
@@ -102,8 +118,8 @@ def main():
 	total = {}
 	for sh in wb.sheetnames:
 		#print(sh)
-		row_num = find_name(sh,str_in)
-		all_details = find_net(sh,row_num)
+		row_num = find_name(sh, str_in, wb)
+		all_details = find_net(sh, row_num, wb)
 		for val in list(all_details.keys()):
 			try:
 				total[val] += all_details[val]
@@ -113,12 +129,16 @@ def main():
 			except TypeError:
 				pass
 		#print(total)
+	#sheet = wb_1.get_sheet_by_name('Sheet1')
+	sav = show_current_savings('Sheet1', str_in)
+	
 	summary = calculate_it(total)
+	cal_sav = savings(sav, summary)
 	print(summary)
-	income_tax(summary)
+	income_tax(summary, cal_sav)
 
 if __name__ == "__main__":
-	main()
+	main() 
 
 
 	#print(find_name(sh,str_in))

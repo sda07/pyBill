@@ -48,8 +48,40 @@ def calculate_it(total_dict):
 	return cal_sh
 
 	#print(cal_sh)
+def rent_calculate(rent_paid, pay, hra):
+	rent = int(rent_paid or 0) - int(round(pay*.1,0))
+	if rent > hra:
+		rent = hra
+	elif rent < 0:
+		rent = 0
+	return rent
 
-def income_tax(total_dict):
+def savings(savings_dict, total_dict):
+	sav = {}
+
+	sav['s_80C'] = int( savings_dict['LIC_S'] or 0)
+	sav['s_80C'] += int( savings_dict['PPF'] or 0) 
+	sav['s_80C'] += int( savings_dict['HBL'] or 0)
+	sav['s_80C'] += int( savings_dict['PLI'] or 0)
+	sav['s_80C'] += int( savings_dict['NSC'] or 0)
+	sav['s_80C'] += int( savings_dict['FD'] or 0)
+	sav['s_80C'] += int( savings_dict['STAMP_DUTY'] or 0)
+	sav['s_80C'] += int( savings_dict['ELSS'] or 0)
+	sav['s_80C'] += int( savings_dict['TUTION'] or 0)
+	sav['s_80C'] += int( savings_dict['OTHER_S'] or 0)
+
+	sav['s_80D'] = int( savings_dict['MEDICLAIM'] or 0)
+
+	sav['s_80CCD'] = int( savings_dict['NPS_SELF'] or 0)
+
+	sav['RENT'] = rent_calculate(savings_dict['RENT_PAI'], total_dict['PAY'],
+		total_dict['HRA'])
+	sav['s_24'] = savings_dict['hbi']
+
+	return sav
+
+
+def income_tax(total_dict, sav):
 	''' calculate income tax'''
 	net_tax = 0
 	income_from_salary = int(total_dict['GROSS'] or 0)
@@ -57,17 +89,23 @@ def income_tax(total_dict):
 	ptax = int(total_dict['PTAX'] or 0)
 	if (ta > 19200):
 		ta = 19200
-	rent = 0 #calculated from calculate_rent()
-	hbi = 0 #later
-	savings_80CCD = int(total_dict['80CCD_1B'] or 0) # + other source
-	savings_80C = int(total_dict['80C'] or 0) # + other source
+	rent = sav['RENT']
+	hbi =int(sav['s_24'] or 0)
+
+	if hbi > 200000:
+		hbi = 200000
+
+	savings_80CCD = int(total_dict['80CCD_1B'] or 0) + sav['s_80CCD']
+	savings_80C = int(total_dict['80C'] or 0) + sav['s_80C']
+
 	if savings_80CCD > 50000 :
 		savings_80C  += savings_80CCD - 50000
+		savings_80CCD = 50000
+		
 	if savings_80C > 150000:
 		savings_80C = 150000
 
-	savings_80D = int(total_dict['80D'] or 0) #+ other source
-
+	savings_80D = int(total_dict['80D'] or 0) + sav['s_80D']
 	taxable_income = income_from_salary - ta - rent - hbi - ptax
 	total_income = taxable_income - (savings_80C + savings_80CCD + savings_80D)
 
