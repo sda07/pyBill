@@ -31,7 +31,7 @@ def calculate_it(total_dict):
 		elif key == 'ROP':
 			cal_sh['GROSS'] -= int( total_dict[key] or 0)
 		elif key == 'SPLPAY':
-			cal_sh['80D'] += int( total_dict[key] or 0)
+			cal_sh['GROSS'] += int( total_dict[key] or 0)
 		elif key == 'GRINSURANC':
 			cal_sh['80C'] += int( total_dict[key] or 0)
 		elif key == 'GPFT':
@@ -44,6 +44,8 @@ def calculate_it(total_dict):
 			cal_sh['IT'] += int( total_dict[key] or 0)
 		elif key == 'SC':
 			cal_sh['CESS'] += int( total_dict[key] or 0)
+		elif key == 'CGHS':
+			cal_sh['80D'] += int( total_dict[key] or 0)
 
 	return cal_sh
 
@@ -70,7 +72,7 @@ def savings(savings_dict, total_dict):
 	sav['s_80C'] += int( savings_dict['TUTION'] or 0)
 	sav['s_80C'] += int( savings_dict['OTHER_S'] or 0)
 
-	sav['s_80D'] = int( savings_dict['MEDICLAIM'] or 0)
+	sav['s_80D'] = int( savings_dict['MEDICLAIM'] or 0) 
 
 	sav['s_80CCD'] = int( savings_dict['NPS_SELF'] or 0)
 
@@ -87,6 +89,7 @@ def income_tax(total_dict, sav):
 	income_from_salary = int(total_dict['GROSS'] or 0)
 	ta = int(total_dict['TA'] or 0)
 	ptax = int(total_dict['PTAX'] or 0)
+	tax_paid  = int(total_dict['IT'] or 0) +  int (total_dict['CESS'] or 0)
 	if (ta > 19200):
 		ta = 19200
 	rent = sav['RENT']
@@ -137,6 +140,7 @@ def income_tax(total_dict, sav):
 	print ('Income Tax           ', net_tax)
 	print ('E. Cess              ', round(net_tax*.03,0))
 	print ('-----------------------------')
+	print ('Tax paid             ', tax_paid )
 	return net_tax
 
 

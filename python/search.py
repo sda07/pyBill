@@ -97,6 +97,8 @@ def find_net(sheet_name, row_num, wb):
 		column = header['ROP']).value
 		net_dict['PTAX'] =  sheet.cell(row = row_num, 
 		column = header['PTAX']).value
+		net_dict['CGHS'] = sheet.cell(row = row_num,
+			column = header['CGHS']).value
 
 		
 	except ValueError:
