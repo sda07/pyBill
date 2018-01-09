@@ -6,9 +6,12 @@ def calculate_it(total_dict):
 		if key == 'BASIC':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
 			cal_sh['PAY'] += int(total_dict[key] or 0)
+			
+
 		elif key =='BASIC1':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
 			cal_sh['PAY'] += int(total_dict[key] or 0)
+
 		elif key == 'SPLPAY':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
 		elif key == 'QPAY':
@@ -16,22 +19,30 @@ def calculate_it(total_dict):
 		elif key == 'TA':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
 			cal_sh['TA'] += int( total_dict[key] or 0)
+
 		elif key == 'CCA':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
+
 		elif key == 'HRA':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
 			cal_sh['HRA'] += int(total_dict[key] or 0)
+
 		elif key == 'DA':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
 			cal_sh['PAY'] += int(total_dict[key] or 0)
+
 		elif key == 'WA':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
+			
 		elif key == 'OTHER1':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
+			
 		elif key == 'ROP':
 			cal_sh['GROSS'] -= int( total_dict[key] or 0)
+			
 		elif key == 'SPLPAY':
 			cal_sh['GROSS'] += int( total_dict[key] or 0)
+
 		elif key == 'GRINSURANC':
 			cal_sh['80C'] += int( total_dict[key] or 0)
 		elif key == 'GPFT':

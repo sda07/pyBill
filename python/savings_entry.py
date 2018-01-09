@@ -38,8 +38,12 @@ def data_entry(sheet_name, emp_name):
 			else:
 				print('\n\n')
 				try:
-					sheet.cell(row = name_row, 
-						column = header[temp]).value = int(str_in)
+					if temp == 'PAN':
+						sheet.cell(row = name_row,
+							column = header['PAN']).value = str_in
+					else : 
+						sheet.cell(row = name_row,
+							column = header[temp]).value = int(str_in)
 				except ValueError:
 					print('Enter valid input')
 					break

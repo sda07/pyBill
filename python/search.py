@@ -1,6 +1,9 @@
 import openpyxl as op
 from openpyxl.utils import coordinate_from_string, column_index_from_string
 from calculate import calculate_it, income_tax, savings
+import msvcrt
+# ...
+
 wb_1 = op.load_workbook('savings.xlsx')
 wb = op.load_workbook('DATA13.xlsx')
 
@@ -120,20 +123,30 @@ def main():
 	total = {}
 	for sh in wb.sheetnames:
 		#print(sh)
+
 		row_num = find_name(sh, str_in, wb)
 		all_details = find_net(sh, row_num, wb)
+		
+		
+		
 		for val in list(all_details.keys()):
+
+			
 			try:
 				total[val] += all_details[val]
+
 			except KeyError:
 				total = all_details
 				break
 			except TypeError:
 				pass
+		# print(total['ROP'])
 		#print(total)
 	#sheet = wb_1.get_sheet_by_name('Sheet1')
 	sav = show_current_savings('Sheet1', str_in)
-	
+	# print(all_details)
+	# print(total)
+	# msvcrt.getch()
 	summary = calculate_it(total)
 	cal_sav = savings(sav, summary)
 	print(summary)
