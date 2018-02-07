@@ -122,12 +122,12 @@ def main():
 	#wb = op.load_workbook(filename = 'DATA13.xlsx')
 	total = {}
 	for sh in wb.sheetnames:
-		#print(sh)
+		# print(sh)
 
 		row_num = find_name(sh, str_in, wb)
 		all_details = find_net(sh, row_num, wb)
 		
-		
+		# print(all_details)
 		
 		for val in list(all_details.keys()):
 
@@ -140,6 +140,8 @@ def main():
 				break
 			except TypeError:
 				pass
+		# msvcrt.getch()
+		# print('----------------------------------')
 		# print(total['ROP'])
 		#print(total)
 	#sheet = wb_1.get_sheet_by_name('Sheet1')

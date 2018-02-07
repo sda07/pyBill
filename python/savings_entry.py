@@ -57,7 +57,11 @@ def data_entry(sheet_name, emp_name):
 
 
 
+def main2():
+	str_in = input('Enter Name : ')
+	show_current_savings('Sheet1',str_in, wb)
+	data_entry('Sheet1',str_in)
 
-str_in = input('Enter Name : ')
-show_current_savings('Sheet1',str_in, wb)
-data_entry('Sheet1',str_in)
+if __name__ == "__main__":
+	main2()
+

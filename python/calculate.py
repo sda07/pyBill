@@ -100,7 +100,7 @@ def income_tax(total_dict, sav):
 	income_from_salary = int(total_dict['GROSS'] or 0)
 	ta = int(total_dict['TA'] or 0)
 	ptax = int(total_dict['PTAX'] or 0)
-	tax_paid  = int(total_dict['IT'] or 0) +  int (total_dict['CESS'] or 0)
+	tax_paid  = int(total_dict['IT'] or 0) #+  int (total_dict['CESS'] or 0)
 	if (ta > 19200):
 		ta = 19200
 	rent = sav['RENT']
